@@ -15,8 +15,7 @@ class CreateOtpCodesTable extends Migration
     {
         Schema::create('otp_codes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->string('mobile');
             $table->string('code');
             $table->timestamp('expired_at')->default(\Carbon\Carbon::now()->addMinutes(3));
             $table->timestamp('used_at')->nullable();
