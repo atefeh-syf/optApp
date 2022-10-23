@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Repositories;
 
 use App\Models\OtpCode;
 use Carbon\Carbon;
@@ -28,7 +28,7 @@ class OtpRepository
         $code = OtpCode::where('mobile', $this->mobile)
                         ->whereNull('used_at')
                         ->where('created_at', '>=', Carbon::now()->addMinutes(-3))->first();
-        
+
         return $code;
     }
 }

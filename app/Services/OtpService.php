@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Services;
 
+use App\Repositories\OtpRepository;
 use App\Models\OtpCode;
 use Carbon\Carbon;
+use App\Notifications\Helper\Strategy\Notification;
+use App\Notifications\Sms\Kavenagar\Services\NotificationBySms;
 
 class OtpService
 {
@@ -25,7 +28,12 @@ class OtpService
     }
 
     public function checkExistCode() {
-        $code = $this->otpRepository->checkExistCode();
+        $otpCode = $this->otpRepository->checkExistCode();
+        $code = $otpCode->code ?? '';
         return $code;
+    }
+
+    public function sendOTPCode($code) {
+        (new Notification(new NotificationBySms()))->send($this->mobile, $code);
     }
 }
