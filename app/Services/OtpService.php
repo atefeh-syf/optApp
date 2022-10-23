@@ -36,4 +36,14 @@ class OtpService
     public function sendOTPCode($code) {
         (new Notification(new NotificationBySms()))->send($this->mobile, $code);
     }
+
+    public function verify($code) {
+        $otpCode = $this->otpRepository->checkCodeVerify($code);
+        if($otpCode) {
+            if($otpCode->expired_at < Carbon::now()) {
+                return true;
+            };
+        }
+        return false;
+    }
 }
